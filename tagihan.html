@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detail Tagihan</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</head>
+<body style="background-color: #E0F7FA; color: #00796B;">
+    <h1>Detail Tagihan</h1>
+    <div id="tagihan-details"></div>
+    <button id="btnBayar" style="display: none; background-color: #00796B; color: white; padding: 10px 20px; border: none; border-radius: 5px; cursor: pointer;">Konfirmasi Pembayaran</button>
+
+    <script>
+        // Ambil parameter dari URL
+        const params = new URLSearchParams(window.location.search);
+        const idTagihan = params.get('id');
+
+        // Ambil data tagihan dari localStorage
+        const tagihanDetailsDiv = document.getElementById('tagihan-details');
+        const btnBayar = document.getElementById('btnBayar');
+
+        // Fungsi untuk menampilkan detail tagihan
+        function loadTagihan() {
+            fetch('data.json')
+                .then(response => response.json())
+                .then(data => {
+                    const tagihan = data[idTagihan]; // Mengambil tagihan berdasarkan ID
+
+                    if (tagihan) {
+                        tagihanDetailsDiv.innerHTML = `
+                            <h2>Tagihan ID: ${idTagihan}</h2>
+                            <p><strong>Produk:</strong> ${tagihan.produk}</p>
+                            <p><strong>Nominal Utang:</strong> ${tagihan.nominal_utang}</p>
+                            <p><strong>Tanggal Transaksi:</strong> ${tagihan.tanggal_transaksi}</p>
+                            <p><strong>QRIS:</strong> <img src="${tagihan.qris}" alt="QRIS" width="150"></p>
+                        `;
+                        btnBayar.style.display = 'inline-block'; // Tampilkan tombol konfirmasi
+                    } else {
+                        tagihanDetailsDiv.innerHTML = '<p>Tagihan tidak ditemukan.</p>';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error fetching data:', error);
+                    tagihanDetailsDiv.innerHTML = '<p>Terjadi kesalahan saat memuat data tagihan.</p>';
+                });
+        }
+
+        // Menangani konfirmasi pembayaran
+        btnBayar.addEventListener('click', function() {
+            Swal.fire({
+                title: 'Konfirmasi Pembayaran',
+                text: 'Apakah Anda yakin pembayaran telah dilakukan?',
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: 'Ya, bayar!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    Swal.fire({
+                        title: 'Pembayaran Berhasil!',
+                        text: 'Tagihan telah dilunasi.',
+                        icon: 'success',
+                        confirmButtonText: 'OK'
+                    }).then(() => {
+                        // Menghapus tagihan dari data.json
+                        fetch('data.json')
+                            .then(response => response.json())
+                            .then(data => {
+                                data.splice(idTagihan, 1); // Hapus tagihan berdasarkan ID
+                                const updatedData = JSON.stringify(data, null, 2);
+
+                                // Simpan kembali ke data.json (perlu backend untuk ini)
+                                // Anda harus mengganti kode ini dengan API untuk menyimpan data
+
+                                // Update tampilan setelah penghapusan
+                                loadTagihan();
+                            });
+                    });
+                }
+            });
+        });
+
+        // Memuat tagihan saat halaman dimuat
+        window.onload = loadTagihan;
+    </script>
+</body>
+</html>

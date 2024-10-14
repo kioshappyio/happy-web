@@ -11,7 +11,7 @@ function loadTagihan() {
                     <strong>Produk:</strong> ${transaction.produk}<br>
                     <strong>Nominal Utang:</strong> ${transaction.nominal_utang}<br>
                     <strong>Tanggal Transaksi:</strong> ${transaction.tanggal_transaksi}<br>
-                    <strong>Link Tagihan:</strong> <a href="${transaction.link}" target="_blank">${transaction.link}</a><br>
+                    <strong>Link Tagihan:</strong> <a href="tagihan.html" target="_blank">Detail Tagihan</a><br>
                     <strong>QRIS:</strong> <img src="${transaction.qris}" alt="QRIS" width="100"><br>
                     <button onclick="deleteTagihan(${index})">Hapus Tagihan</button><br><br>
                 `;
@@ -36,7 +36,7 @@ document.getElementById('utangForm').addEventListener('submit', function(event) 
             produk: produk,
             tanggal_transaksi: tanggalTransaksi,
             qris: reader.result,
-            link: `https://kioshappyio.github.io/happy-web/tagihan/${Date.now()}` // Link tagihan yang dihasilkan
+            link: 'tagihan.html' // Mengarahkan ke tagihan.html
         };
 
         // Mengambil data lama dan menambahkan entri baru
@@ -46,13 +46,16 @@ document.getElementById('utangForm').addEventListener('submit', function(event) 
                 data.push(newEntry);
                 const updatedData = JSON.stringify(data, null, 2);
 
-                // Mengupdate data.json tidak dapat dilakukan langsung di GitHub Pages
+                // Update data.json tidak dapat dilakukan langsung di GitHub Pages
                 // Anda memerlukan backend untuk menyimpan data ini secara permanen
                 Swal.fire({
                     title: 'Sukses!',
-                    text: 'Tagihan berhasil dibuat! Link: ' + newEntry.link,
+                    text: 'Tagihan berhasil dibuat! Link: <a href="tagihan.html" target="_blank">Detail Tagihan</a>',
                     icon: 'success',
                     confirmButtonText: 'OK'
+                }).then(() => {
+                    // Reset form setelah konfirmasi
+                    document.getElementById('utangForm').reset();
                 });
 
                 // Memuat ulang daftar tagihan
