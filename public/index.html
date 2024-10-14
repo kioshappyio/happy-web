@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Penagihan Utang Kios Happy</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Form Penagihan Utang</h1>
+        <form action="upload.php" method="POST" enctype="multipart/form-data">
+            <label for="nominal_utang">Nominal Utang:</label>
+            <input type="range" id="nominal_utang" name="nominal_utang" min="0" max="10000000" step="1000" value="500000">
+            <span id="nominal_value">500000</span>
+            
+            <label for="produk">Produk yang Dihutang:</label>
+            <input type="text" id="produk" name="produk" required>
+
+            <label for="tanggal_transaksi">Tanggal Transaksi:</label>
+            <input type="date" id="tanggal_transaksi" name="tanggal_transaksi" required>
+
+            <label for="qris">Upload QRIS:</label>
+            <input type="file" id="qris" name="qris" accept="image/*" required>
+
+            <label for="bukti_pembayaran">Upload Bukti Pembayaran:</label>
+            <input type="file" id="bukti_pembayaran" name="bukti_pembayaran" accept="image/*" required>
+
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+
+    <script>
+        const nominalInput = document.getElementById('nominal_utang');
+        const nominalValue = document.getElementById('nominal_value');
+
+        nominalInput.oninput = function() {
+            nominalValue.textContent = nominalInput.value;
+        };
+    </script>
+</body>
+</html>
