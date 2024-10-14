@@ -36,7 +36,7 @@ document.getElementById('utangForm').addEventListener('submit', function(event) 
             produk: produk,
             tanggal_transaksi: tanggalTransaksi,
             qris: reader.result,
-            link: 'tagihan.html' // Mengarahkan ke tagihan.html
+            link: 'https://kioshappyio.github.io/happy-web/tagihan.html' // Mengarahkan ke tagihan.html
         };
 
         // Mengambil data lama dan menambahkan entri baru
@@ -50,7 +50,7 @@ document.getElementById('utangForm').addEventListener('submit', function(event) 
                 // Anda memerlukan backend untuk menyimpan data ini secara permanen
                 Swal.fire({
                     title: 'Sukses!',
-                    text: 'Tagihan berhasil dibuat! Link: <a href="tagihan.html" target="_blank">Detail Tagihan</a>',
+                    text: 'Tagihan berhasil dibuat! Link: <a href="https://kioshappyio.github.io/happy-web/tagihan.html" target="_blank">Detail Tagihan</a>',
                     icon: 'success',
                     confirmButtonText: 'OK'
                 }).then(() => {
